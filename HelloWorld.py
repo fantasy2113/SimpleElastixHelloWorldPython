@@ -1,6 +1,9 @@
 import SimpleITK as sitk
 
-resultImage = sitk.Elastix(sitk.ReadImage("sae/he_phh3/Bio5_HE.png", sitk.sitkInt8),
-                           sitk.ReadImage("sae/he_phh3/Bio5_PHH3.png", sitk.sitkInt8), "translation")
+fixed = sitk.ReadImage("HE_PHH3/Bio5_HE.png", sitk.sitkUInt8)
+moving = sitk.ReadImage("HE_PHH3/Bio5_PHH3.png", sitk.sitkUInt8)
 
-sitk.Show(resultImage, title="Hello World: Python", debugOn=True)
+resultImage = sitk.Elastix(fixed, moving, "translation")
+resultImage = sitk.Cast(resultImage, sitk.sitkUInt8)
+
+sitk.WriteImage(resultImage, "resultImage.png")
